@@ -1,8 +1,6 @@
 #ifndef __ANNOTATED_TRACER__
 #define __ANNOTATED_TRACER__
 
-#include "ezOptionParser.h"
-
 #include "BitMap.h"
 
 #include "revtracer/revtracer.h"
@@ -11,6 +9,10 @@
 
 #define Z3_TRACKING 0x1
 #define TAINTED_INDEX_TRACKING 0x0
+
+namespace ez {
+	class ezOptionParser;
+};
 
 namespace at {
 

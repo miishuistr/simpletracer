@@ -1,3 +1,7 @@
+#include <iostream>
+
+#include "ezOptionParser.h"
+
 #include "BinFormat.h"
 #include "TextFormat.h"
 

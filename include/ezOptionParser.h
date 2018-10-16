@@ -437,15 +437,15 @@ namespace ez {
 		/* If value must be in custom range, use these comparison modes. */
 		enum OP {
 			NOOP = 0,
-			LT, /* value < list[0] */
-			LE, /* value <= list[0] */
-			GT, /* value > list[0] */
-			GE, /* value >= list[0] */
-			GTLT, /* list[0] < value < list[1] */
-			GELT, /* list[0] <= value < list[1] */
-			GELE, /* list[0] <= value <= list[1] */
-			GTLE, /* list[0] < value <= list[1] */
-			IN /* if value is in list */
+			LTOP, /* value < list[0] */
+			LEOP, /* value <= list[0] */
+			GTOP, /* value > list[0] */
+			GEOP, /* value >= list[0] */
+			GTLTOP, /* list[0] < value < list[1] */
+			GELTOP, /* list[0] <= value < list[1] */
+			GELEOP, /* list[0] <= value <= list[1] */
+			GTLEOP, /* list[0] < value <= list[1] */
+			INOP /* if value is in list */
 		};
 
 		enum TYPE { NOTYPE = 0, S1, U1, S2, U2, S4, U4, S8, U8, F, D, T };
@@ -626,16 +626,16 @@ namespace ez {
 			switch (_op[0]) {
 			case 'g':
 				switch (_op[1]) {
-				case 'e': op = GE; break;
-				default: op = GT; break;
+				case 'e': op = GEOP; break;
+				default: op = GTOP; break;
 				}
 				break;
-			case 'i': op = IN;
+			case 'i': op = INOP;
 				break;
 			default:
 				switch (_op[1]) {
-				case 'e': op = LE; break;
-				default: op = LT; break;
+				case 'e': op = LEOP; break;
+				default: op = LTOP; break;
 				}
 				break;
 			}
@@ -644,14 +644,14 @@ namespace ez {
 			switch (_op[1]) {
 			case 'e':
 				switch (_op[3]) {
-				case 'e': op = GELE; break;
-				default: op = GELT; break;
+				case 'e': op = GELEOP; break;
+				default: op = GELTOP; break;
 				}
 				break;
 			default:
 				switch (_op[3]) {
-				case 'e': op = GTLE; break;
-				default: op = GTLT; break;
+				case 'e': op = GTLEOP; break;
+				default: op = GTLTOP; break;
 				}
 				break;
 			}
@@ -809,7 +809,7 @@ namespace ez {
 			}
 		}
 		else {
-			if (op == IN) {
+			if (op == INOP) {
 				int i = 0;
 				if (insensitive) {
 					std::string valueAsStringLower(*valueAsString);
@@ -838,7 +838,7 @@ namespace ez {
   U v;\
   ss >> v;\
   /* Check if within list. */ \
-  if (op == IN) { \
+  if (op == INOP) { \
     T * last = LIST + size;\
     return (last != std::find(LIST, last, v)); \
   } \
@@ -854,7 +854,7 @@ namespace ez {
   } \
   \
   switch (op) {\
-    case LT:\
+    case LTOP:\
       if (size > 0) {\
         return v < v0;\
       } else {\
@@ -862,7 +862,7 @@ namespace ez {
         return false;\
       }\
       break;\
-    case LE:\
+    case LEOP:\
       if (size > 0) {\
         return v <= v0;\
       } else {\
@@ -870,7 +870,7 @@ namespace ez {
         return false;\
       }\
       break;\
-    case GT:\
+    case GTOP:\
       if (size > 0) {\
         return v > v0;\
       } else {\
@@ -878,7 +878,7 @@ namespace ez {
         return false;\
       }\
       break;\
-    case GE:\
+    case GEOP:\
       if (size > 0) {\
         return v >= v0;\
       } else {\
@@ -886,7 +886,7 @@ namespace ez {
         return false;\
       }\
       break;\
-    case GTLT:\
+    case GTLTOP:\
       if (size > 1) {\
         return (v0 < v) && (v < v1);\
       } else {\
@@ -894,7 +894,7 @@ namespace ez {
         return false;\
       }\
       break;\
-    case GELT:\
+    case GELTOP:\
       if (size > 1) {\
         return (v0 <= v) && (v < v1);\
       } else {\
@@ -902,7 +902,7 @@ namespace ez {
         return false;\
       }\
       break;\
-    case GELE:\
+    case GELEOP:\
       if (size > 1) {\
         return (v0 <= v) && (v <= v1);\
       } else {\
@@ -910,7 +910,7 @@ namespace ez {
         return false;\
       }\
       break;\
-    case GTLE:\
+    case GTLEOP:\
       if (size > 1) {\
         return (v0 < v) && (v <= v1);\
       } else {\
@@ -918,7 +918,7 @@ namespace ez {
         return false;\
       }\
       break;\
-      case NOOP: case IN: default: break;\
+      case NOOP: case INOP: default: break;\
   } \
   }
 

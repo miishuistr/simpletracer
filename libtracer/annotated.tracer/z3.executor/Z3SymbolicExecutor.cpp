@@ -394,9 +394,8 @@ template <Z3SymbolicExecutor::BVFunc func> void Z3SymbolicExecutor::SymbolicJump
 	}
 	sf.symbolicCond = (unsigned int)cond;
 
-	SymbolicAst sast = {
-		.address = AstToBenchmarkString((Z3_ast) sf.symbolicCond, "jump_symbol"),
-	};
+	SymbolicAst sast;
+	sast.address = AstToBenchmarkString((Z3_ast)sf.symbolicCond, "jump_symbol");
 	sast.size = strlen(sast.address);
 
 	aFormat->WriteZ3SymbolicJumpCC(0, sf, sast);
@@ -1075,13 +1074,13 @@ void Z3SymbolicExecutor::Execute(RiverInstruction *instruction) {
 
 		if (opAddressInfo.fields & OP_HAS_SYMBOLIC) {
 			SymbolicAddress sa = {
-				.symbolicBase = (unsigned int)baseOpInfo.symbolic,
-				.scale = (unsigned int)scale,
-				.symbolicIndex = (unsigned int)indexOpInfo.symbolic,
-				.composedSymbolicAddress = (unsigned int)opAddressInfo.symbolic,
-				.dispType = 0,
-				.displacement = 0,
-				.inputOutput = 0
+				(unsigned int)baseOpInfo.symbolic,		// symbolicBase
+				(unsigned int)scale,					// scale
+				(unsigned int)indexOpInfo.symbolic,		// symbolicIndex
+				(unsigned int)opAddressInfo.symbolic,	// composedSymbolicAddress
+				0,										// dispType
+				0,										// displacement
+				0										// inputOutput
 			};
 
 			if ((RIVER_SPEC_MODIFIES_OP(i) | RIVER_SPEC_IGNORES_OP(i)) & instruction->specifiers) {
@@ -1109,9 +1108,8 @@ void Z3SymbolicExecutor::Execute(RiverInstruction *instruction) {
 					instruction->instructionAddress,
 					mCount, mInfo);
 
-			SymbolicAst sast = {
-				.address = AstToBenchmarkString((Z3_ast)sa.composedSymbolicAddress, "address_symbol"),
-			};
+			SymbolicAst sast;
+			sast.address = AstToBenchmarkString((Z3_ast)sa.composedSymbolicAddress, "address_symbol");
 			sast.size = strlen(sast.address);
 
 			aFormat->WriteZ3SymbolicAddress(0, sa, sast);

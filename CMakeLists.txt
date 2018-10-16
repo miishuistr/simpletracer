@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8)
-set (CMAKE_SYSTEM_NAME Linux)
+#set (CMAKE_SYSTEM_NAME Linux)
 #set(CMAKE_VERBOSE_MAKEFILE on)
 project (SIMPLE_TRACER)
 

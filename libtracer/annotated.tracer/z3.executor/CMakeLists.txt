@@ -2,8 +2,16 @@
 
 set(EXECUTABLE_NAME symbolic_demo)
 set(LIBRARY_NAME z3executor)
-set(CROSS_FLAGS "-D__cdecl=\"\" -D__stdcall=\"\"")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -m32 -std=c++11 ${CROSS_FLAGS}")
+
+if(WIN32)
+set(FLAGS_CROSS "-D_cdecl=\"__cdecl\" \
+	-D_stdcall=\"__stdcall\"")
+else(WIN32)
+set(FLAGS_CROSS "-D_cdecl=\"__attribute__((cdecl))\" \
+	-D_stdcall=\"__attribute__((stdcall))\"")
+endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -m32 -std=c++11 ${FLAGS_CROSS}")
 
 include_directories($ENV{RIVER_SDK_DIR}/include)
 
